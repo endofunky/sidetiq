@@ -1,7 +1,9 @@
 require_relative 'helper'
 
 class TestClock < Sidetiq::TestCase
-  class FakeWorker;
+  class FakeWorker
+    def perform
+    end
   end
 
   def test_delegates_to_instance
@@ -61,5 +63,72 @@ class TestClock < Sidetiq::TestCase
     clock.tick
     clock.tick
   end
-end
 
+  class LastTickWorker
+    def perform last_tick
+    end
+  end
+
+  def test_enqueues_jobs_with_default_last_tick_arg_on_first_run
+    schedule = Sidetiq::Schedule.new(Sidetiq::Clock::START_TIME)
+    schedule.hourly
+
+    time = Time.local(2011, 1, 1, 1, 30)
+
+    clock.stubs(:gettime).returns(time, time + 3600)
+    clock.stubs(:schedules).returns(LastTickWorker => schedule)
+
+    expected_first_tick = time + 1800
+    expected_second_tick = expected_first_tick + 3600
+
+    LastTickWorker.expects(:perform_at).with(expected_first_tick, -1).once
+    LastTickWorker.expects(:perform_at).with(expected_second_tick, expected_first_tick.to_f).once
+
+    clock.tick
+    clock.tick
+  end
+
+  class LastAndScheduledTicksWorker
+    def perform last_tick, scheduled_tick
+    end
+  end
+
+  def test_enqueues_jobs_with_last_run_timestamp_and_next_run_timestamp
+    schedule = Sidetiq::Schedule.new(Sidetiq::Clock::START_TIME)
+    schedule.hourly
+
+    time = Time.local(2011, 1, 1, 1, 30)
+
+    clock.stubs(:gettime).returns(time, time + 3600)
+    clock.stubs(:schedules).returns(LastAndScheduledTicksWorker => schedule)
+
+    expected_first_tick = time + 1800
+    expected_second_tick = expected_first_tick + 3600
+
+    LastAndScheduledTicksWorker.expects(:perform_at).with(expected_first_tick, -1, expected_first_tick.to_f).once
+    clock.tick
+
+    LastAndScheduledTicksWorker.expects(:perform_at).with(expected_second_tick, expected_first_tick.to_f, expected_second_tick.to_f).once
+    clock.tick
+  end
+
+  class SplatArgsWorker
+    def perform arg1, *args
+    end
+  end
+
+  def test_enqueues_jobs_correctly_for_splat_args_perform_methods
+    schedule = Sidetiq::Schedule.new(Sidetiq::Clock::START_TIME)
+    schedule.hourly
+
+    time = Time.local(2011, 1, 1, 1, 30)
+
+    clock.stubs(:gettime).returns(time, time + 3600)
+    clock.stubs(:schedules).returns(SplatArgsWorker => schedule)
+
+    expected_first_tick = time + 1800
+
+    SplatArgsWorker.expects(:perform_at).with(expected_first_tick, -1, expected_first_tick.to_f).once
+    clock.tick
+  end
+end

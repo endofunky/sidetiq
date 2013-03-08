@@ -12,10 +12,26 @@ module Sidetiq
   #     end
   module Schedulable
     module ClassMethods
+      def last_scheduled_occurrence
+        get_timestamp "last"
+      end
+
+      def next_scheduled_occurrence
+        get_timestamp "next"
+      end
+
       def tiq(&block) # :nodoc:
         clock = Sidetiq::Clock.instance
         clock.synchronize do
           clock.schedule_for(self).instance_eval(&block)
+        end
+      end
+
+    private
+
+      def get_timestamp(key)
+        Sidekiq.redis do |redis|
+          (redis.get("sidetiq:#{name}:#{key}") || -1).to_f
         end
       end
     end
@@ -25,4 +41,3 @@ module Sidetiq
     end
   end
 end
-

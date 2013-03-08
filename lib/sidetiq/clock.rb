@@ -131,15 +131,20 @@ module Sidetiq
 
     def enqueue(worker, time)
       key = "sidetiq:#{worker.name}"
+      time_f = time.to_f
 
       synchronize_clockworks("#{key}:lock") do |redis|
-        status = redis.get(key)
+        next_run = (redis.get("#{key}:next") || -1).to_f
 
-        if status.nil? || status.to_f < time.to_f
-          time_f = time.to_f
-          Sidekiq.logger.info "Sidetiq::Clock enqueue #{worker.name} (at: #{time_f})"
-          redis.set(key, time_f)
-          worker.perform_at(time)
+        if next_run < time_f
+          Sidekiq.logger.info "Sidetiq::Clock enqueue #{worker.name} (at: #{time_f}) (last: #{next_run})"
+
+          redis.mset("#{key}:last", next_run, "#{key}:next", time_f)
+
+          arity = [worker.instance_method(:perform).arity - 1, -1].max
+          args = [next_run, time_f][0..arity]
+
+          worker.perform_at(time, *args)
         end
       end
     end
@@ -176,4 +181,3 @@ module Sidetiq
     end
   end
 end
-
