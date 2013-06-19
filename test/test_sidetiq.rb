@@ -23,7 +23,7 @@ class TestSidetiq < Sidetiq::TestCase
 
   def test_scheduled
     SimpleWorker.perform_at(Time.local(2011, 1, 1, 1))
-    SimpleWorker.client_push_old(SimpleWorker.jobs.first)
+    Sidekiq::Client.push_old(SimpleWorker.jobs.first)
 
     scheduled = Sidetiq.scheduled
 
@@ -38,7 +38,7 @@ class TestSidetiq < Sidetiq::TestCase
 
   def test_scheduled_given_arguments
     SimpleWorker.perform_at(Time.local(2011, 1, 1, 1))
-    SimpleWorker.client_push_old(SimpleWorker.jobs.first)
+    Sidekiq::Client.push_old(SimpleWorker.jobs.first)
 
     assert_equal 1, Sidetiq.scheduled(SimpleWorker).length
     assert_equal 0, Sidetiq.scheduled(ScheduledWorker).length
@@ -49,10 +49,10 @@ class TestSidetiq < Sidetiq::TestCase
 
   def test_scheduled_yields_each_job
     SimpleWorker.perform_at(Time.local(2011, 1, 1, 1))
-    SimpleWorker.client_push_old(SimpleWorker.jobs.first)
+    Sidekiq::Client.push_old(SimpleWorker.jobs.first)
 
     ScheduledWorker.perform_at(Time.local(2011, 1, 1, 1))
-    ScheduledWorker.client_push_old(ScheduledWorker.jobs.first)
+    Sidekiq::Client.push_old(ScheduledWorker.jobs.first)
 
     jobs = []
     Sidetiq.scheduled { |job| jobs << job }

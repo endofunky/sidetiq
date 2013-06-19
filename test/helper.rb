@@ -20,6 +20,20 @@ Dir[File.join(File.dirname(__FILE__), 'fixtures/**/*.rb')].each do |fixture|
   require fixture
 end
 
+class Sidekiq::Client
+  # Sidekiq testing helper now overwrites raw_push so we need to use
+  # raw_push_old below to keep tests as is.
+  # https://github.com/mperham/sidekiq/blob/v2.12.4/lib/sidekiq/client.rb#L39
+  def self.push_old(item)
+    normed = normalize_item(item)
+    payload = process_single(item['class'], normed)
+
+    pushed = false
+    pushed = raw_push_old([payload]) if payload
+    pushed ? payload['jid'] : nil
+  end
+end
+
 class Sidetiq::TestCase < MiniTest::Unit::TestCase
   def setup
     Sidekiq.redis { |r| r.flushall }
