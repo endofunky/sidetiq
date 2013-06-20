@@ -118,6 +118,33 @@ class TestClock < Sidetiq::TestCase
     clock.tick
   end
 
+  def test_do_not_pass_arguments_if_configured
+    Sidetiq.config.time_args = false
+
+    schedule = Sidetiq::Schedule.new
+    schedule.hourly
+
+    time = Time.local(2011, 1, 1, 1, 30)
+
+    clock.stubs(:gettime).returns(time, time + 3600)
+    clock.stubs(:schedules).returns(LastAndScheduledTicksWorker => schedule)
+
+    expected_first_tick = time + 1800
+    expected_second_tick = expected_first_tick + 3600
+
+    LastAndScheduledTicksWorker.expects(:perform_at)
+      .with(expected_first_tick).once
+
+    clock.tick
+
+    LastAndScheduledTicksWorker.expects(:perform_at)
+      .with(expected_second_tick).once
+
+    clock.tick
+
+    Sidetiq.config.time_args = true
+  end
+
   def test_enqueues_jobs_correctly_for_splat_args_perform_methods
     schedule = Sidetiq::Schedule.new
     schedule.hourly

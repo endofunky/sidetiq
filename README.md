@@ -188,8 +188,12 @@ Sidetiq.configure do |config|
   # Clock locking key expiration in ms (default: 1000).
   config.lock_expire = 100
 
-  # When `true` uses UTC instead of local times (default: false)
+  # When `true` uses UTC instead of local times (default: false).
   config.utc = false
+
+  # When `true` passes last and current occurrence time to the worker
+  # (default: true).
+  config.time_args = true
 end
 ```
 <a name='section_Configuration_Logging'></a>
