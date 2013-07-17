@@ -4,6 +4,7 @@ module Sidetiq
     config.resolution = 1
     config.lock_expire = 1000
     config.utc = false
+    config.time_args = true
   end
 
   # Public: The Sidetiq clock.
@@ -139,10 +140,13 @@ module Sidetiq
 
         redis.mset("#{key}:last", next_run, "#{key}:next", time_f)
 
-        arity = [worker.instance_method(:perform).arity - 1, -1].max
-        args = [next_run, time_f][0..arity]
-
-        worker.perform_at(time, *args)
+        if Sidetiq.config.time_args
+          arity = [worker.instance_method(:perform).arity - 1, -1].max
+          args = [next_run, time_f][0..arity]
+          worker.perform_at(time, *args)
+        else
+          worker.perform_at(time)
+        end
       end
     end
 
