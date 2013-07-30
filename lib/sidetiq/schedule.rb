@@ -47,7 +47,7 @@ module Sidetiq
     #     include Sidekiq::Worker
     #     include Sidetiq::Schedulable
     #
-    #     tiq { daily }
+    #     recurrence { daily }
     #
     #     def perform
     #     end

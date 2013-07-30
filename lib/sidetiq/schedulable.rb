@@ -8,7 +8,7 @@ module Sidetiq
   #     include Sidetiq::Schedulable
   #
   #     # Daily at midnight
-  #     tiq { daily }
+  #     recurrence { daily }
   #   end
   module Schedulable
     module ClassMethods
