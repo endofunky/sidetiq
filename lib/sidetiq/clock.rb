@@ -139,7 +139,7 @@ module Sidetiq
 
         redis.mset("#{key}:last", next_run, "#{key}:next", time_f)
 
-        case worker.instance_method(:perform).arity
+        case worker.instance_method(:perform).arity.abs
         when 0
           worker.perform_at(time)
         when 1

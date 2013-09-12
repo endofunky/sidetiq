@@ -118,6 +118,22 @@ class TestClock < Sidetiq::TestCase
     clock.tick
   end
 
+  def test_enqueues_jobs_with_last_run_timestamp_if_optional_argument
+    schedule = Sidetiq::Schedule.new
+    schedule.hourly
+
+    time = Time.local(2011, 1, 1, 1, 30)
+
+    clock.stubs(:gettime).returns(time, time + 3600)
+    clock.stubs(:schedules).returns(OptionalArgumentWorker => schedule)
+
+    expected_first_tick = time + 1800
+
+    OptionalArgumentWorker.expects(:perform_at)
+      .with(expected_first_tick, -1).once
+    clock.tick
+  end
+
   def test_enqueues_jobs_correctly_for_splat_args_perform_methods
     schedule = Sidetiq::Schedule.new
     schedule.hourly
