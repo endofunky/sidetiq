@@ -13,9 +13,9 @@ Overview
 
 Sidetiq provides a simple API for defining recurring workers for Sidekiq.
 
-- Cuncurrency and fault-tolerance using Celluloid actors.
+- Concurrency and fault-tolerance using Celluloid actors.
 
-- Flexible DSL based on [ice_cube](http://seejohnrun.github.com/ice_cube/)
+- Flexible DSL based on [ice_cube](http://seejohnrun.github.com/ice_cube/).
 
 - Distributed, Redis-based locking to synchronize multiple Sidetiq processes.
 
