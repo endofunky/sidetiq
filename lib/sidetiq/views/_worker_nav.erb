@@ -1,22 +1,16 @@
-<div class="span3">
-  <ul class="nav nav-list sidetiq-sidenav">
-    <li>
-      <a href="<%= "#{root_path}sidetiq" %>">
-        <i class="icon-chevron-right"></i>
-        Home
-      </a>
-    </li>
-    <li>
-      <a href="<%= "#{root_path}sidetiq/#{@worker.name}/schedule" %>">
-        <i class="icon-chevron-right"></i>
-        Job Schedule
-      </a>
-    </li>
-    <li>
-      <a href="<%= "#{root_path}sidetiq/#{@worker.name}/history" %>">
-        <i class="icon-chevron-right"></i>
-        Job History
-      </a>
-    </li>
-  </ul>
+<div class="col-md-3">
+  <dic class="list-group sidetiq-sidenav">
+    <a href="<%= root_path %>sidetiq" class="list-group-item<%= current_path == 'sidetiq' ? ' active' : nil %>">
+      <i class="icon-chevron-right"></i>
+      Home
+    </a>
+    <a href="<%= root_path %>sidetiq/#{@worker.name}/schedule" class="list-group-item<%= current_path == "sidetiq/#{@worker.name}/schedule" ? ' active' : nil %>">
+      <i class="icon-chevron-right"></i>
+      Job Schedule
+    </a>
+    <a href="<%= root_path %>sidetiq/#{@worker.name}/history" class="list-group-item<%= current_path == "#{@worker.name}/history" ? ' active' : nil %>">
+      <i class="icon-chevron-right"></i>
+      Job History
+    </a>
+  </div>
 </div>

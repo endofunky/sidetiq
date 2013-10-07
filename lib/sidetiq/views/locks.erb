@@ -1,16 +1,16 @@
 <%= File.read(File.join(File.dirname(__FILE__), 'views', 'assets', 'styles.css')) %>
 
 <header class="row">
-  <div class="span5">
+  <div class="col-md-5">
     <h3>Active Locks</h3>
   </div>
 </header>
 
-<div class="container-fluid sidetiq-container">
-  <div class="row-fluid">
+<div class="container">
+  <div class="row">
     <%= erb File.read(File.join(File.dirname(__FILE__), 'views', '_home_nav.erb')) %>
 
-    <div class="span9">
+    <div class="col-md-9">
       <% if @locks.length > 0 %>
       <table class="table table-striped table-bordered table-white" style="width: 100%; margin: 0; table-layout:fixed;">
         <thead>

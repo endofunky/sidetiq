@@ -1,16 +1,12 @@
-<div class="span3">
-  <ul class="nav nav-list sidetiq-sidenav">
-    <li>
-      <a href="<%= " #{root_path}sidetiq" %>">
-        <i class="icon-chevron-right"></i>
-        Home
-      </a>
-    </li>
-    <li>
-      <a href="<%= "#{root_path}sidetiq/locks" %>">
-        <i class="icon-chevron-right"></i>
-        Locks
-      </a>
-    </li>
-  </ul>
+<div class="col-md-3">
+  <div class="list-group sidetiq-sidenav">
+    <a href="<%= root_path %>sidetiq" class="list-group-item<%= current_path == 'sidetiq' ? ' active' : nil %>">
+      <i class="icon-chevron-right"></i>
+      Home
+    </a>
+    <a href="<%= root_path %>sidetiq/locks" class="list-group-item<%= current_path == 'sidetiq/locks' ? ' active' : nil %>">
+      <i class="icon-chevron-right"></i>
+      Locks
+    </a>
+  </div>
 </div>
