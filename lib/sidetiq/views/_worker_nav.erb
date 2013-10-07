@@ -1,14 +1,14 @@
 <div class="col-md-3">
-  <div class="list-group sidetiq-sidenav">
+  <dic class="list-group">
     <a href="<%= root_path %>sidetiq" class="list-group-item<%= current_path == 'sidetiq' ? ' active' : nil %>">
       <i class="icon-chevron-right"></i>
       Home
     </a>
-    <a href="<%= root_path %>sidetiq/#{@worker.name}/schedule" class="list-group-item<%= current_path == "sidetiq/#{@worker.name}/schedule" ? ' active' : nil %>">
+    <a href="<%= "#{root_path}sidetiq/#{@worker.name}/schedule" %>" class="list-group-item<%= current_path == "sidetiq/#{@worker.name}/schedule" ? ' active' : nil %>">
       <i class="icon-chevron-right"></i>
       Job Schedule
     </a>
-    <a href="<%= root_path %>sidetiq/#{@worker.name}/history" class="list-group-item<%= current_path == "#{@worker.name}/history" ? ' active' : nil %>">
+    <a href="<%= "#{root_path}sidetiq/#{@worker.name}/history" %>" class="list-group-item<%= current_path == "sidetiq/#{@worker.name}/history" ? ' active' : nil %>">
       <i class="icon-chevron-right"></i>
       Job History
     </a>
