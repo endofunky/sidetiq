@@ -95,7 +95,7 @@ module Sidetiq
       def extract_key(key)
         case key
         when Class
-          "sidetiq:#{key.name}:lock"
+          "sidetiq:#{Sidetiq.namespace(key)}:lock"
         when String
           key.match(/sidetiq:(.+):lock/) ? key : "sidetiq:#{key}:lock"
         end

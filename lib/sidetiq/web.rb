@@ -47,7 +47,7 @@ module Sidetiq
         end
 
         @history = Sidekiq.redis do |redis|
-          redis.lrange("sidetiq:#{name}:history", 0, -1)
+          redis.lrange("sidetiq:#{Sidetiq.namespace(name)}:history", 0, -1)
         end
 
         erb File.read(File.join(VIEWS, 'history.erb')), locals: {view_path: VIEWS}
@@ -60,17 +60,17 @@ module Sidetiq
           worker.name == name
         end
 
-        case worker.instance_method(:perform).arity.abs
+        case worker.instance_method(:perform).parameters.size
         when 0
           worker.perform_async
         when 1
           Sidekiq.redis do |redis|
-            last_run = (redis.get("sidetiq:#{worker.name}:last") || -1).to_f
+            last_run = (redis.get("sidetiq:#{Sidetiq.namespace(worker.name)}:last") || -1).to_f
             worker.perform_async(last_run)
           end
         else
           Sidekiq.redis do |redis|
-            last_run = (redis.get("sidetiq:#{worker.name}:last") || -1).to_f
+            last_run = (redis.get("sidetiq:#{Sidetiq.namespace(worker.name)}:last") || -1).to_f
             worker.perform_async(last_run, Sidetiq.clock.gettime.to_i)
           end
         end

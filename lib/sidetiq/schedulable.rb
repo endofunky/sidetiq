@@ -56,15 +56,15 @@ module Sidetiq
       private
 
       def get_schedulable_keys
-        %w(next last schedule_description history).map { |key| "sidetiq:#{name}:#{key}" }
+        %w(next last schedule_description history).map { |key| "sidetiq:#{Sidetiq.namespace(name)}:#{key}" }
       end
 
       def get_schedulable_key(key)
-        Sidekiq.redis_pool.with { |r| r.get("sidetiq:#{name}:#{key}") }
+        Sidekiq.redis_pool.with { |r| r.get("sidetiq:#{Sidetiq.namespace(name)}:#{key}") }
       end
 
       def set_schedulable_key(key, value)
-        Sidekiq.redis_pool.with { |r| r.set("sidetiq:#{name}:#{key}", value) }
+        Sidekiq.redis_pool.with { |r| r.set("sidetiq:#{Sidetiq.namespace(name)}:#{key}", value) }
       end
 
       def get_timestamp(key)

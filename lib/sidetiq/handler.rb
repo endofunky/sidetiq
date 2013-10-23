@@ -8,6 +8,8 @@ module Sidetiq
     def dispatch(worker, tick)
       schedule = worker.schedule
 
+      return if schedule.disabled?(worker)
+
       return unless schedule.schedule_next?(tick)
 
       Lock::Redis.new(worker).synchronize do |redis|
@@ -28,7 +30,7 @@ module Sidetiq
     private
 
     def enqueue(worker, time, redis)
-      key      = "sidetiq:#{worker.name}"
+      key      = "sidetiq:#{Sidetiq.namespace(worker)}"
       time_f   = time.to_f
       next_run = (redis.get("#{key}:next") || -1).to_f
 
@@ -37,7 +39,7 @@ module Sidetiq
 
         redis.mset("#{key}:last", next_run, "#{key}:next", time_f)
 
-        case worker.instance_method(:perform).arity.abs
+        case worker.instance_method(:perform).parameters.size
         when 0
           worker.perform_at(time)
         when 1

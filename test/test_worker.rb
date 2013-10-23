@@ -15,8 +15,8 @@ class TestWorker < Sidetiq::TestCase
     next_run = (Time.now + 100).to_f
 
     Sidekiq.redis do |redis|
-      redis.set "sidetiq:TestWorker::FakeWorker:last", last_run
-      redis.set "sidetiq:TestWorker::FakeWorker:next", next_run
+      redis.set "sidetiq:test_worker:fake_worker:last", last_run
+      redis.set "sidetiq:test_worker:fake_worker:next", next_run
     end
 
     assert FakeWorker.last_scheduled_occurrence == last_run
