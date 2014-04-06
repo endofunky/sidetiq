@@ -54,6 +54,16 @@ class TestLockRedis < Sidetiq::TestCase
     end
   end
 
+  def test_extract_key
+    lock_redis = ::Sidetiq::Lock::Redis.new(SimpleWorker)
+    assert_equal "sidetiq:simpleworker:lock", lock_redis.instance_variable_get(:@key)
+  end
+
+  def test_extract_key_with_custom_queue
+    lock_redis = ::Sidetiq::Lock::Redis.new(SimpleWorkerWithQueue)
+    assert_equal "sidetiq:simpleworkerwithqueue_test1234:lock", lock_redis.instance_variable_get(:@key)
+  end
+
   def locked(lock_name)
     Sidetiq::Lock::Redis.new(lock_name).synchronize do |redis|
       yield redis

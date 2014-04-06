@@ -10,7 +10,7 @@ class TestHistory < Sidetiq::TestCase
     middlewared do; end
 
     entry = Sidekiq.redis do |redis|
-      redis.lrange('sidetiq:TestHistory::HistoryWorker:history', 0, -1)
+      redis.lrange('sidetiq:testhistory:historyworker:history', 0, -1)
     end
 
     actual = Sidekiq.load_json(entry[0]).symbolize_keys
@@ -34,7 +34,7 @@ class TestHistory < Sidetiq::TestCase
     end
 
     entry = Sidekiq.redis do |redis|
-      redis.lrange('sidetiq:TestHistory::HistoryWorker:history', 0, -1)
+      redis.lrange('sidetiq:testhistory:historyworker:history', 0, -1)
     end
 
     actual = Sidekiq.load_json(entry[0]).symbolize_keys
