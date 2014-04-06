@@ -12,14 +12,14 @@ module Sidetiq
           new(owner: OWNER, timestamp: Sidetiq.clock.gettime.to_f, key: key)
         end
 
-        def from_json(json = "")
+        def from_json(json = '')
           # Avoid TypeError when nil is passed to Sidekiq.load_json.
-          json = "" if json.nil?
+          json ||= ''
 
           hash = Sidekiq.load_json(json).symbolize_keys
           new(hash)
         rescue StandardError => e
-          if json != ""
+          if json != ''
             # Looks like garbage lock metadata, so report it.
             handle_exception(e, context: "Garbage lock meta data detected: #{json}")
           end
