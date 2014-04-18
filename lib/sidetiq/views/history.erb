@@ -2,7 +2,7 @@
 
 <header class="row">
   <div class="col-md-5">
-    <h3>Recurring Job: <%= @worker.name %></h3>
+    <h3><%= t('recurring_job') %>: <%= @worker.name %></h3>
   </div>
 </header>
 
@@ -13,9 +13,9 @@
     <div class="col-md-9">
       <table class="table table-striped table-bordered table-hover table-white" style="width: 100%; margin: 0; table-layout:fixed;">
         <thead>
-          <th style="width: 10%">Status</th>
-          <th style="width: 20%">Timestamp</th>
-          <th>Details</th>
+          <th style="width: 10%"><%= t('status') %></th>
+          <th style="width: 20%"><%= t('timestamp') %></th>
+          <th><%= t('details') %></th>
         </thead>
 
         <% @history.each do |entry| %>
@@ -35,7 +35,7 @@
             </div>
             <% end %>
             <p>
-              <span>Node: <%= entry[:node] %></span>
+              <span><%= t('node') %>: <%= entry[:node] %></span>
             </p>
           </td>
         </tr>

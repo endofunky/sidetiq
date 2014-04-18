@@ -5,6 +5,9 @@ module Sidetiq
     VIEWS = File.expand_path('views', File.dirname(__FILE__))
 
     def self.registered(app)
+
+      app.settings.locales << File.join(File.expand_path('..', __FILE__), 'locales')
+
       app.get "/sidetiq" do
         @workers = Sidetiq.workers
         @time = Sidetiq.clock.gettime
@@ -72,4 +75,3 @@ end
 
 Sidekiq::Web.register(Sidetiq::Web)
 Sidekiq::Web.tabs["Sidetiq"] = "sidetiq"
-
