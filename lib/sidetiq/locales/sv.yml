@@ -1,0 +1,30 @@
+---
+sv:
+  home: Hem
+  locks: Lås
+  job_schedule: Jobb schema
+  job_history: Jobb historik
+  recurring_job: Återkommande jobb
+  recurring_jobs: Återkommande jobb
+  status: Status
+  timestamp: Tidsstämpel
+  details: Detaljer
+  node: Nod
+  active_locks: Aktiva lås
+  key: Nyckel
+  owner_node: Ägare nod
+  ttl: TTL
+  actions: Åtgärder
+  are_you_sure_remove_lock: Är du säker på att du vill ta bort detta lås?
+  no_locks_set: Inga lås satta.
+  recurrences: Upprepningar
+  exceptions: Undantag
+  next_runs: 'Nästa %{times} körningar'
+  worker: Arbetare
+  queue: Kö
+  next_run: Nästa körning
+  no_schedule: Inget schema
+  are_you_sure_trigger_job: Är du säker på att du vill köra det här jobbet?
+  no_recurring_jobs_found: Inga återkommande jobb hittades.
+  trigger: Kör
+  unlock: Lås upp
