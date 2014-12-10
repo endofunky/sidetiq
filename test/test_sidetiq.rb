@@ -1,6 +1,10 @@
 require_relative 'helper'
 
 class TestSidetiq < Sidetiq::TestCase
+  def before
+    Sidetiq::Schedule.stubs(:beginning_of_times).returns(Time.new(2014, 1, 1))
+  end
+
   def test_schedules
     schedules = Sidetiq.schedules
 
@@ -20,7 +24,7 @@ class TestSidetiq < Sidetiq::TestCase
 
   def test_scheduled
     client = Sidekiq::Client.new
-    SimpleWorker.perform_at(Time.local(2011, 1, 1, 1))
+    SimpleWorker.perform_at(Time.local(2015, 1, 1, 1))
     hash = SimpleWorker.jobs.first
     client.push_old(hash.merge("at" => hash["enqueued_at"]))
 
@@ -37,7 +41,7 @@ class TestSidetiq < Sidetiq::TestCase
 
   def test_scheduled_given_arguments
     client = Sidekiq::Client.new
-    SimpleWorker.perform_at(Time.local(2011, 1, 1, 1))
+    SimpleWorker.perform_at(Time.local(2015, 1, 1, 1))
     hash = SimpleWorker.jobs.first
     client.push_old(hash.merge("at" => hash["enqueued_at"]))
 
@@ -50,11 +54,11 @@ class TestSidetiq < Sidetiq::TestCase
 
   def test_scheduled_yields_each_job
     client = Sidekiq::Client.new
-    SimpleWorker.perform_at(Time.local(2011, 1, 1, 1))
+    SimpleWorker.perform_at(Time.local(2015, 1, 1, 1))
     hash = SimpleWorker.jobs.first
     client.push_old(hash.merge("at" => hash["enqueued_at"]))
 
-    ScheduledWorker.perform_at(Time.local(2011, 1, 1, 1))
+    ScheduledWorker.perform_at(Time.local(2015, 1, 1, 1))
     hash = ScheduledWorker.jobs.first
     client.push_old(hash.merge("at" => hash["enqueued_at"]))
 

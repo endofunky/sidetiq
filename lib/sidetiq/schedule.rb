@@ -10,7 +10,13 @@ module Sidetiq
     # Public: Start time offset from epoch used for calculating run
     # times in the Sidetiq schedules.
     def self.start_time
-      Sidetiq.config.utc ? Time.utc(2010, 1, 1) : Time.local(2010, 1, 1)
+      year, month, day = beginning_of_times.year, beginning_of_times.month, beginning_of_times.day
+
+      Sidetiq.config.utc ? Time.utc(year, month, day) : Time.local(year, month, day)
+    end
+
+    def self.beginning_of_times
+      Time.now
     end
 
     def initialize # :nodoc:
