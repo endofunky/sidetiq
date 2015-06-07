@@ -1,7 +1,7 @@
 require_relative 'helper'
 require 'minitest/mock'
 
-class TestShedulable < Sidetiq::TestCase
+class TestSchedulable < Sidetiq::TestCase
   class FakeWorker
     include Sidetiq::Schedulable
   end
@@ -20,13 +20,13 @@ class TestShedulable < Sidetiq::TestCase
     end
   end
 
-  def test_resheduling
+  def test_rescheduling
     last_run = (Time.now - 100).to_f
     next_run = (Time.now + 100).to_f
 
     Sidekiq.redis do |redis|
-      redis.set "sidetiq:TestShedulable::FakeWorker:last", last_run
-      redis.set "sidetiq:TestShedulable::FakeWorker:next", next_run
+      redis.set "sidetiq:test_schedulable:fake_worker:last", last_run
+      redis.set "sidetiq:test_schedulable:fake_worker:next", next_run
     end
 
     assert FakeWorker.schedule_description == nil
@@ -39,8 +39,8 @@ class TestShedulable < Sidetiq::TestCase
     assert FakeWorker.next_scheduled_occurrence == -1.0
 
     Sidekiq.redis do |redis|
-      redis.set "sidetiq:TestShedulable::FakeWorker:last", last_run
-      redis.set "sidetiq:TestShedulable::FakeWorker:next", next_run
+      redis.set "sidetiq:test_schedulable:fake_worker:last", last_run
+      redis.set "sidetiq:test_schedulable:fake_worker:next", next_run
     end
 
     FakeWorker.schedule = nil
