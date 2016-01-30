@@ -4,22 +4,20 @@ if RUBY_PLATFORM != "java"
   require 'simplecov'
   require 'coveralls'
 
-  SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
-      SimpleCov::Formatter::HTMLFormatter,
-      Coveralls::SimpleCov::Formatter
-  ]
+  SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(
+    SimpleCov::Formatter::HTMLFormatter
+  )
   SimpleCov.start
 end
 
 require 'sidekiq'
 require 'sidekiq/testing'
-
 require 'minitest'
 require 'mocha/setup'
 require 'rack/test'
-
 require 'sidetiq'
 require 'sidetiq/web'
+require 'tilt/erubis'
 
 module Sidekiq
   def self.server?

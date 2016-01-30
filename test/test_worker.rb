@@ -10,19 +10,6 @@ class TestWorker < Sidetiq::TestCase
     assert FakeWorker.next_scheduled_occurrence == -1
   end
 
-  def test_timestamps_for_existing_worker
-    last_run = (Time.now - 100).to_f
-    next_run = (Time.now + 100).to_f
-
-    Sidekiq.redis do |redis|
-      redis.set "sidetiq:testworker:fakeworker:last", last_run
-      redis.set "sidetiq:testworker:fakeworker:next", next_run
-    end
-
-    assert FakeWorker.last_scheduled_occurrence == last_run
-    assert FakeWorker.next_scheduled_occurrence == next_run
-  end
-
   def test_options
     assert BackfillWorker.schedule.backfill?
   end

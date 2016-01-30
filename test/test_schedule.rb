@@ -3,8 +3,8 @@ require_relative 'helper'
 class TestSchedule < Sidetiq::TestCase
   def test_method_missing
     sched = Sidetiq::Schedule.new
-    sched.daily
-    assert_equal "Daily", sched.to_s
+    sched.daily.minute_of_hour(15).hour_of_day(9)
+    assert_equal "Daily on the 15th minute of the hour on the 9th hour of the day", sched.to_s
   end
 
   def test_schedule_next?
@@ -37,9 +37,8 @@ class TestSchedule < Sidetiq::TestCase
 
   def test_use_utc
     Sidetiq.config.utc = true
-    assert_equal(Time.utc(2010, 01, 01), Sidetiq::Schedule.new.start_time)
+    assert_equal(Time.utc(Time.now.year, Time.now.month, Time.now.day), Sidetiq::Schedule.new.start_time)
   ensure
     Sidetiq.config.utc = false
   end
 end
-
