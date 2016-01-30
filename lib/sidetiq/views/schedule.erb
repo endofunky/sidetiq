@@ -4,7 +4,7 @@
 
 <header class="row">
   <div class="col-md-5">
-    <h3>Recurring Job: <%= @worker.name %></h3>
+    <h3><%= t('recurring_job') %>: <%= @worker.name %></h3>
   </div>
 </header>
 
@@ -16,7 +16,7 @@
       <% if (recurrences = @schedule.recurrence_rules).length > 0 %>
       <table class="table table-striped table-bordered table-hover table-white table-sidetiq">
         <thead>
-          <th>Recurrences</th>
+          <th><%= t('recurrences') %></th>
         </thead>
         <% recurrences.each do |rule| %>
         <tr>
@@ -31,7 +31,7 @@
       <% if (exceptions = @schedule.exception_rules).length > 0 %>
       <table class="table table-striped table-bordered table-hover table-white table-sidetiq">
         <thead>
-          <th>Exceptions</th>
+          <th><%= t('exceptions') %></th>
         </thead>
         <% exceptions.each do |rule| %>
         <tr>
@@ -45,7 +45,7 @@
 
       <table class="table table-striped table-bordered table-hover table-white table-sidetiq">
         <thead>
-          <th style="width: 25%">Next 10 runs</th>
+          <th style="width: 25%"><%= t('next_runs', times: 10) %></th>
           <th style="width: 75%" />
           <% @schedule.next_occurrences(10, @time).each do |time| %>
           <tr>
