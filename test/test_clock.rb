@@ -1,6 +1,10 @@
 require_relative 'helper'
 
 class TestClock < Sidetiq::TestCase
+  def before
+    Sidetiq::Schedule.stubs(:beginning_of_times).returns(Time.new(2014, 1, 1))
+  end
+
   def test_gettime_seconds
     assert_equal clock.gettime.tv_sec, Time.now.tv_sec
   end

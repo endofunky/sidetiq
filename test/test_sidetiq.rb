@@ -1,6 +1,10 @@
 require_relative 'helper'
 
 class TestSidetiq < Sidetiq::TestCase
+  def before
+    Sidetiq::Schedule.stubs(:beginning_of_times).returns(Time.new(2014, 1, 1))
+  end
+
   def test_schedules
     schedules = Sidetiq.schedules
     assert_includes schedules, ScheduledWorker.schedule
