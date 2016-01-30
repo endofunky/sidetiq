@@ -3,7 +3,7 @@
 
 [![Build Status](https://travis-ci.org/danilogcarolino/sidetiq.png)](https://travis-ci.org/danilogcarolino/sidetiq)
 [![Dependency Status](https://gemnasium.com/danilogcarolino/sidetiq.png)](https://gemnasium.com/danilogcarolino/sidetiq)
-[![Coverage Status](https://coveralls.io/repos/danilogcarolino/sidetiq/badge.png)](https://coveralls.io/r/danilogcarolino/sidetiq)
+[![Coverage Status](https://coveralls.io/repos/github/danilogcarolino/sidetiq/badge.svg?branch=master)](https://coveralls.io/github/danilogcarolino/sidetiq?branch=master)
 
 Recurring jobs for [Sidekiq](http://mperham.github.com/sidekiq/).
 
