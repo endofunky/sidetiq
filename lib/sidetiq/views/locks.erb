@@ -36,6 +36,7 @@
           </td>
             <td>
               <form action="<%= "#{root_path}sidetiq/#{meta.key}/unlock" %>" method="post">
+                <%= csrf_tag %>
                 <input class="btn btn-danger btn-small" type="submit" name="trigger" value="Unlock" data-confirm="Are you sure you want remove this lock?" />
               </form>
             </td>
