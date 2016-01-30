@@ -23,6 +23,7 @@ class TestHistory < Sidetiq::TestCase
 
     refute_empty actual[:node]
     refute_empty actual[:timestamp]
+    assert actual[:runtime] > 0
   end
 
   def test_failure
@@ -47,6 +48,7 @@ class TestHistory < Sidetiq::TestCase
 
     refute_empty actual[:node]
     refute_empty actual[:timestamp]
+    assert actual[:runtime] > 0
   end
 
   def middlewared
