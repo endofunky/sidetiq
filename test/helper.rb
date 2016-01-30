@@ -17,7 +17,6 @@ require 'mocha/setup'
 require 'rack/test'
 require 'sidetiq'
 require 'sidetiq/web'
-require 'tilt/erubis'
 
 module Sidekiq
   def self.server?
