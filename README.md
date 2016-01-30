@@ -33,6 +33,11 @@ License
 
 Sidetiq is released under the 3-clause BSD. See LICENSE for further details.
 
+Fork Maintener
+------
+
+Danilo Carolino, [@danilogcarolino](https://twitter.com/danilogcarolino), [http://github.com/danilogcarolino](http://github.com/danilogcarolino)
+
 Author
 ------
 
