@@ -2,15 +2,15 @@
   <div class="list-group">
     <a href="<%= root_path %>sidetiq" class="list-group-item<%= current_path == 'sidetiq' ? ' active' : nil %>">
       <i class="icon-chevron-right"></i>
-      Home
+      <%= t('home') %>
     </a>
     <a href="<%= "#{root_path}sidetiq/#{@worker.name}/schedule" %>" class="list-group-item<%= current_path == "sidetiq/#{@worker.name}/schedule" ? ' active' : nil %>">
       <i class="icon-chevron-right"></i>
-      Job Schedule
+      <%= t('job_schedule') %>
     </a>
     <a href="<%= "#{root_path}sidetiq/#{@worker.name}/history" %>" class="list-group-item<%= current_path == "sidetiq/#{@worker.name}/history" ? ' active' : nil %>">
       <i class="icon-chevron-right"></i>
-      Job History
+      <%= t('job_history') %>
     </a>
   </div>
 </div>

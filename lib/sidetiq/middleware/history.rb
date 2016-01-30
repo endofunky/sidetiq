@@ -13,6 +13,7 @@ module Sidetiq
 
       def call_with_sidetiq_history(worker, msg, queue)
         entry = new_history_entry
+        start_time = Time.now
 
         yield
       rescue StandardError => e
@@ -23,6 +24,7 @@ module Sidetiq
 
         raise e
       ensure
+        entry[:runtime] = (Time.now - start_time)
         save_entry_for_worker(entry, worker)
       end
 
@@ -33,13 +35,14 @@ module Sidetiq
           exception: "",
           backtrace: "",
           node: "#{Socket.gethostname}:#{Process.pid}-#{Thread.current.object_id}",
-          timestamp: Time.now.iso8601
+          timestamp: Time.now.iso8601,
+          runtime: ""
         }
       end
 
       def save_entry_for_worker(entry, worker)
         Sidekiq.redis do |redis|
-          list_name = "sidetiq:#{worker.class.name}:history"
+          list_name = "sidetiq:#{Sidetiq.namespace(worker)}:history"
 
           redis.lpush(list_name, Sidekiq.dump_json(entry))
           redis.ltrim(list_name, 0, Sidetiq.config.worker_history - 1)

@@ -5,10 +5,10 @@ module Sidetiq
     MAJOR = 0
 
     # Public: Sidetiq minor version number.
-    MINOR = 6
+    MINOR = 7
 
     # Public: Sidetiq patch level.
-    PATCH = 3
+    PATCH = 0
 
     # Public: Sidetiq version suffix.
     SUFFIX = nil
@@ -17,4 +17,3 @@ module Sidetiq
     STRING = [MAJOR, MINOR, PATCH, SUFFIX].compact.join('.')
   end
 end
-

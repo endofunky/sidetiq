@@ -4,10 +4,8 @@ class TestLockRedis < Sidetiq::TestCase
   def test_locking
     lock_name = SecureRandom.hex(8)
     key = SecureRandom.hex(8)
-
     Sidekiq.redis do |redis|
       redis.set(key, 0)
-
       5.times.map do
         Thread.start do
           locked(lock_name) do |r|
@@ -16,7 +14,6 @@ class TestLockRedis < Sidetiq::TestCase
           end
         end
       end.each(&:join)
-
       assert_equal "1", redis.get(key)
     end
   end
@@ -54,10 +51,15 @@ class TestLockRedis < Sidetiq::TestCase
     end
   end
 
+
+  def test_extract_key_with_custom_queue
+    lock_redis = ::Sidetiq::Lock::Redis.new(SimpleWorkerWithQueue)
+    assert_equal "sidetiq:simpleworkerwithqueue_test1234:lock", lock_redis.instance_variable_get(:@key)
+  end
+
   def locked(lock_name)
     Sidetiq::Lock::Redis.new(lock_name).synchronize do |redis|
       yield redis
     end
   end
 end
-

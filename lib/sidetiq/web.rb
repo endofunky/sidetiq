@@ -6,6 +6,9 @@ module Sidetiq
     VIEWS = File.expand_path('views', File.dirname(__FILE__))
 
     def self.registered(app)
+
+      app.settings.locales << File.join(File.expand_path('..', __FILE__), 'locales')
+
       app.get "/sidetiq" do
         @workers = Sidetiq.workers.sort_by { |worker| worker.name }
         @time = Sidetiq.clock.gettime
@@ -47,7 +50,7 @@ module Sidetiq
         end
 
         @history = Sidekiq.redis do |redis|
-          redis.lrange("sidetiq:#{name}:history", 0, -1)
+          redis.lrange("sidetiq:#{Sidetiq.namespace(name)}:history", 0, -1)
         end
 
         erb File.read(File.join(VIEWS, 'history.erb')), locals: {view_path: VIEWS}
@@ -91,4 +94,3 @@ end
 
 Sidekiq::Web.register(Sidetiq::Web)
 Sidekiq::Web.tabs["Sidetiq"] = "sidetiq"
-

@@ -1,0 +1,31 @@
+---
+en:
+  home: Home
+  locks: Locks
+  job_schedule: Job Schedule
+  job_history: Job History
+  recurring_job: Recurring Job
+  recurring_jobs: Recurring Jobs
+  status: Status
+  timestamp: Timestamp
+  details: Details
+  runtime: Runtime
+  node: Node
+  active_locks: Active Locks
+  key: Key
+  owner_node: Owner Node
+  ttl: TTL
+  actions: Actions
+  are_you_sure_remove_lock: Are you sure you want remove this lock?
+  no_locks_set: No locks set.
+  recurrences: Recurrences
+  exceptions: Exceptions
+  next_runs: 'Next %{times} runs'
+  worker: Worker
+  queue: Queue
+  next_run: Next Run
+  no_schedule: No schedule
+  are_you_sure_trigger_job: Are you sure you want to trigger this job?
+  no_recurring_jobs_found: No recurring jobs found.
+  trigger: Trigger
+  unlock: Unlock

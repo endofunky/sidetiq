@@ -1,3 +1,9 @@
+0.6.4
+-----
+
+- Use Time.current instead of Time.now in rails apps to
+  respect configured timezone [effektz]
+
 0.6.3
 -----
 

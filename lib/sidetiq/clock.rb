@@ -57,7 +57,7 @@ module Sidetiq
     #
     # Returns a Time instance.
     def gettime
-      Sidetiq.config.utc ? Time.now.utc : Time.now
+      Sidetiq.config.utc ? Time.now.utc : (Time.respond_to?(:current) ? Time.current : Time.now)
     end
   end
 end

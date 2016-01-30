@@ -1,15 +1,20 @@
+ENV['RACK_ENV'] = 'test'
+
 if RUBY_PLATFORM != "java"
+  require 'simplecov'
   require 'coveralls'
-  Coveralls.wear!
+
+  SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(
+    SimpleCov::Formatter::HTMLFormatter
+  )
+  SimpleCov.start
 end
 
 require 'sidekiq'
 require 'sidekiq/testing'
-
 require 'minitest'
 require 'mocha/setup'
 require 'rack/test'
-
 require 'sidetiq'
 require 'sidetiq/web'
 
