@@ -119,4 +119,17 @@ class TestClock < Sidetiq::TestCase
       .with(expected_first_tick, -1, expected_first_tick.to_f).once
     clock.tick
   end
+
+  def test_does_not_enqueues_jobs_unless_enqueue_jobs
+    time = Time.local(2011, 1, 1, 1, 30)
+
+    clock.stubs(:gettime).returns(time, time + 3600)
+
+    Sidetiq.config.stubs(:enqueue_jobs?).returns(false)
+
+    Sidetiq.stubs(:workers).returns([SimpleWorker])
+
+    SimpleWorker.expects(:perform_at).never
+    clock.tick
+  end
 end
