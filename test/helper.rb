@@ -1,3 +1,4 @@
+ENV['RACK_ENV'] = 'test'
 if RUBY_PLATFORM != "java"
   require 'coveralls'
   Coveralls.wear!

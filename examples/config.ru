@@ -11,4 +11,6 @@ Sidekiq.configure_client do |config|
   config.redis = { :size => 1 }
 end
 
+use Rack::Session::Cookie, :secret => "some unique secret string here"
+
 run Sidekiq::Web
