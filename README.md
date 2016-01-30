@@ -1,10 +1,9 @@
 ![Sidetiq](http://f.cl.ly/items/1W3k0R2V2x3n3S1t1M0B/sidetiq.png)
 =========
 
-[![Build Status](https://travis-ci.org/tobiassvn/sidetiq.png)](https://travis-ci.org/tobiassvn/sidetiq)
-[![Dependency Status](https://gemnasium.com/tobiassvn/sidetiq.png)](https://gemnasium.com/tobiassvn/sidetiq)
-[![Coverage Status](https://coveralls.io/repos/tobiassvn/sidetiq/badge.png)](https://coveralls.io/r/tobiassvn/sidetiq)
-[![Code Climate](https://codeclimate.com/github/tobiassvn/sidetiq.png)](https://codeclimate.com/github/tobiassvn/sidetiq)
+[![Build Status](https://travis-ci.org/danilogcarolino/sidetiq.png)](https://travis-ci.org/danilogcarolino/sidetiq)
+[![Dependency Status](https://gemnasium.com/danilogcarolino/sidetiq.png)](https://gemnasium.com/danilogcarolino/sidetiq)
+[![Coverage Status](https://coveralls.io/repos/danilogcarolino/sidetiq/badge.png)](https://coveralls.io/r/danilogcarolino/sidetiq)
 
 Recurring jobs for [Sidekiq](http://mperham.github.com/sidekiq/).
 
