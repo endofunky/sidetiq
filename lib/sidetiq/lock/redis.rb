@@ -56,7 +56,7 @@ module Sidetiq
           acquired = false
 
           watch(redis, key) do
-            if !redis.exists(key)
+            unless redis.exists(key)
               acquired = !!redis.multi do |multi|
                 meta = MetaData.for_new_lock(key)
                 multi.psetex(key, timeout, meta.to_json)
@@ -95,7 +95,7 @@ module Sidetiq
       def extract_key(key)
         case key
         when Class
-          "sidetiq:#{key.name}:lock"
+          "sidetiq:#{Sidetiq.namespace(key)}:lock"
         when String
           key.match(/sidetiq:(.+):lock/) ? key : "sidetiq:#{key}:lock"
         end

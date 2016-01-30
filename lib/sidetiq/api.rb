@@ -93,6 +93,24 @@ module Sidetiq
       filter_set(Sidekiq::RetrySet.new, worker, &block)
     end
 
+    def namespace(obj)
+      ns = case obj
+           when ::Class
+             str = obj.name
+             if obj.sidekiq_options_hash && obj.sidekiq_options_hash['queue']
+               str << "_#{obj.sidekiq_options_hash['queue']}"
+             end
+             str
+           when ::String, ::Symbol
+             obj
+           else
+             obj.class.name
+           end
+      ns.gsub!('::', ':')
+      ns.gsub!('-', '_')
+      ns.downcase
+    end
+
     private
 
     def filter_set(set, worker, &block)

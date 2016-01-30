@@ -42,7 +42,7 @@ module Sidetiq
 
       def save_entry_for_worker(entry, worker)
         Sidekiq.redis do |redis|
-          list_name = "sidetiq:#{worker.class.name}:history"
+          list_name = "sidetiq:#{Sidetiq.namespace(worker)}:history"
 
           redis.lpush(list_name, Sidekiq.dump_json(entry))
           redis.ltrim(list_name, 0, Sidetiq.config.worker_history - 1)

@@ -50,7 +50,7 @@ module Sidetiq
         end
 
         @history = Sidekiq.redis do |redis|
-          redis.lrange("sidetiq:#{name}:history", 0, -1)
+          redis.lrange("sidetiq:#{Sidetiq.namespace(name)}:history", 0, -1)
         end
 
         erb File.read(File.join(VIEWS, 'history.erb')), locals: {view_path: VIEWS}

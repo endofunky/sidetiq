@@ -20,7 +20,7 @@ module Sidetiq
 
       # Public: Returns a Float timestamp of the last scheduled run.
       def last_scheduled_occurrence
-        get_timestamp "last"
+        get_timestamp 'last'
       end
 
       # Public: Returns the Sidetiq::Schedule for this worker.
@@ -30,25 +30,24 @@ module Sidetiq
 
       # Public: Returns a Float timestamp of the next scheduled run.
       def next_scheduled_occurrence
-        get_timestamp "next"
+        get_timestamp 'next'
       end
 
       def schedule_description
-        get_schedulable_key("schedule_description")
+        get_schedulable_key('schedule_description')
       end
 
       def recurrence(options = {}, &block) # :nodoc:
         schedule.instance_eval(&block)
         schedule.set_options(options)
-
         # deleting schedulable keys if schedule changed since last reccurence definition
         if Sidekiq.server?
-          old_description = get_schedulable_key("schedule_description")
+          old_description = get_schedulable_key('schedule_description')
           if old_description != schedule.to_s
             get_schedulable_keys.map do |key|
               Sidekiq.redis_pool.with { |r| r.del(key) }
             end
-            set_schedulable_key("schedule_description", schedule.to_s)
+            set_schedulable_key('schedule_description', schedule.to_s)
           end
         end
       end
@@ -74,7 +73,6 @@ module Sidetiq
 
     def self.included(klass) # :nodoc:
       super
-
       klass.extend(Sidetiq::Schedulable::ClassMethods)
       klass.extend(Sidetiq::SubclassTracking)
       subclasses << klass

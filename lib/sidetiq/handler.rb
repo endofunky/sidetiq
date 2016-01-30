@@ -28,7 +28,7 @@ module Sidetiq
     private
 
     def enqueue(worker, time, redis)
-      key      = "sidetiq:#{worker.name}"
+      key      = "sidetiq:#{Sidetiq.namespace(worker)}"
       time_f   = time.to_f
       next_run = (redis.get("#{key}:next") || -1).to_f
 

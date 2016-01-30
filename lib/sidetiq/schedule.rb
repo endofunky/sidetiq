@@ -24,11 +24,11 @@ module Sidetiq
 
     def method_missing(meth, *args, &block) # :nodoc:
       if IceCube::Rule.respond_to?(meth)
-        rule = IceCube::Rule.send(meth, *args, &block)
+        rule = IceCube::Rule.__send__(meth, *args, &block)
         @schedule.add_recurrence_rule(rule)
         rule
       elsif @schedule.respond_to?(meth)
-        @schedule.send(meth, *args, &block)
+        @schedule.__send__(meth, *args, &block)
       else
         super
       end
