@@ -9,40 +9,23 @@ rvm:
   - 2.0.0
   - 2.1.5
   - 2.3.0
-  - jruby-19mode
-  - rbx-19mode
   - ruby-head
+  - jruby-19mode
   - jruby-head
 jdk:
-  - openjdk6
-  - openjdk7
-  - oraclejdk7
+  - oraclejdk8
+  - openjdk8
 matrix:
   exclude:
     - rvm: 2.3.0
-      jdk: openjdk7
+      jdk: openjdk8
     - rvm: 2.1.1
-      jdk: openjdk7
-    - rvm: 2.1.1
-      jdk: openjdk6
+      jdk: openjdk8
     - rvm: 2.0.0
-      jdk: openjdk7
-    - rvm: 2.0.0
-      jdk: openjdk6
-    - rvm: 1.9.3
-      jdk: openjdk7
-    - rvm: 1.9.3
-      jdk: openjdk6
-    - rvm: rbx-19mode
-      jdk: openjdk7
-    - rvm: rbx-19mode
-      jdk: openjdk6
+      jdk: openjdk8
     - rvm: ruby-head
-      jdk: openjdk7
-    - rvm: ruby-head
-      jdk: openjdk6
+      jdk: openjdk8
   allow_failures:
-    - rvm: rbx-19mode
     - rvm: ruby-head
     - rvm: jruby-head
     - rvm: jruby-19mode
