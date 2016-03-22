@@ -52,9 +52,14 @@ module Sidetiq
 
     def link_to_sidekiq_manager
       if Sidekiq::CLI.instance.launcher.present? && Sidekiq::CLI.instance.launcher.manager.present?
-        p = ::Sidetiq::Actor::CelluloidWrapper.new(current_actor)
-        Sidekiq::CLI.instance.launcher.manager.workers << p
-        current_actor
+        begin
+          p = ::Sidetiq::Actor::CelluloidWrapper.new(current_actor)
+          Sidekiq::CLI.instance.launcher.manager.workers << p
+          current_actor
+        rescue RuntimeError => e
+          debug "Can't link #{self.class.name}. Sidekiq::Manager is in iteration. Retrying in 5 seconds ..."
+          after(5) { link_to_sidekiq_manager }
+        end
       else
         debug "Can't link #{self.class.name}. Sidekiq::Manager not running. Retrying in 5 seconds ..."
         after(5) { link_to_sidekiq_manager }
