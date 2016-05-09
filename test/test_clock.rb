@@ -32,6 +32,19 @@ class TestClock < Sidetiq::TestCase
     assert_equal 10, BackfillWorker.jobs.length
   end
 
+  def test_disabling_worker
+    Sidekiq.redis do |redis|
+      redis.set 'sidetiq:SimpleWorker:active', '0'
+    end
+
+    Sidetiq.stubs(:workers).returns([SimpleWorker])
+
+    clock.stubs(:gettime).returns(Time.local(2011, 1, 1))
+    clock.tick
+
+    assert_equal 0, SimpleWorker.jobs.length
+  end
+
   def test_enqueues_jobs_by_schedule
     Sidetiq.stubs(:workers).returns([SimpleWorker])
 

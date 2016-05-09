@@ -8,7 +8,7 @@ module Sidetiq
     def dispatch(worker, tick)
       schedule = worker.schedule
 
-      return unless schedule.schedule_next?(tick)
+      return unless schedule.schedule_next?(tick) && worker.active?
 
       Lock::Redis.new(worker).synchronize do |redis|
         if schedule.backfill? && (last = worker.last_scheduled_occurrence) > 0
