@@ -85,10 +85,35 @@ module Sidetiq
 
         redirect "#{root_path}sidetiq/locks"
       end
+
+      app.post '/sidetiq/:name/deactivate' do
+        halt 404 unless (name = params[:name])
+
+        worker = Sidetiq.workers.find { |w| w.name == name }
+        halt 404 if worker.nil?
+
+        Sidekiq.redis do |redis|
+          redis.set "sidetiq:#{worker.name}:active", '0'
+        end
+
+        redirect "#{root_path}sidetiq"
+      end
+
+      app.post '/sidetiq/:name/activate' do
+        halt 404 unless (name = params[:name])
+
+        worker = Sidetiq.workers.find { |w| w.name == name }
+        halt 404 if worker.nil?
+
+        Sidekiq.redis do |redis|
+          redis.set "sidetiq:#{worker.name}:active", '1'
+        end
+
+        redirect "#{root_path}sidetiq"
+      end
     end
   end
 end
 
 Sidekiq::Web.register(Sidetiq::Web)
 Sidekiq::Web.tabs["Sidetiq"] = "sidetiq"
-

@@ -69,6 +69,28 @@ class TestWeb < Sidetiq::TestCase
     assert_equal 1, ScheduledWorker.jobs.size
   end
 
+  def test_deactivate
+    Sidekiq.redis do |redis|
+      redis.set 'sidetiq:ScheduledWorker:active', '1'
+    end
+
+    post '/sidetiq/ScheduledWorker/deactivate'
+    assert_equal 302, last_response.status
+    assert_equal "http://#{host}/sidetiq", last_response.location
+    refute ScheduledWorker.active?
+  end
+
+  def test_activate
+    Sidekiq.redis do |redis|
+      redis.set 'sidetiq:ScheduledWorker:active', '0'
+    end
+
+    post '/sidetiq/ScheduledWorker/activate'
+    assert_equal 302, last_response.status
+    assert_equal "http://#{host}/sidetiq", last_response.location
+    assert ScheduledWorker.active?
+  end
+
   def test_unlock
     Sidekiq.redis do |redis|
       redis.set("sidetiq:Foo:lock", 1)
@@ -83,4 +105,3 @@ class TestWeb < Sidetiq::TestCase
     end
   end
 end
-
