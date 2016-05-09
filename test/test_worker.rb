@@ -23,6 +23,22 @@ class TestWorker < Sidetiq::TestCase
     assert FakeWorker.next_scheduled_occurrence == next_run
   end
 
+  def test_active_option
+    assert FakeWorker.active?
+
+    Sidekiq.redis do |redis|
+      redis.set 'sidetiq:TestWorker::FakeWorker:active', 0
+    end
+
+    refute FakeWorker.active?
+
+    Sidekiq.redis do |redis|
+      redis.set 'sidetiq:TestWorker::FakeWorker:active', 1
+    end
+
+    assert FakeWorker.active?
+  end
+
   def test_options
     assert BackfillWorker.schedule.backfill?
   end

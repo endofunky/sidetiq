@@ -33,6 +33,13 @@ module Sidetiq
         get_timestamp "next"
       end
 
+      # Public: Returns the Boolean state of the worker.
+      def active?
+        active = get_schedulable_key('active')
+
+        active.nil? || active == '1'
+      end
+
       def schedule_description
         get_schedulable_key("schedule_description")
       end
@@ -56,7 +63,7 @@ module Sidetiq
       private
 
       def get_schedulable_keys
-        %w(next last schedule_description history).map { |key| "sidetiq:#{name}:#{key}" }
+        %w(next last schedule_description history active).map { |key| "sidetiq:#{name}:#{key}" }
       end
 
       def get_schedulable_key(key)
