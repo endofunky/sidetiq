@@ -39,7 +39,7 @@ class TestClock < Sidetiq::TestCase
 
     Sidetiq.stubs(:workers).returns([SimpleWorker])
 
-    clock.stubs(:gettime).returns(Time.local(2011, 1, 1))
+    clock.stubs(:gettime).returns(Time.local(2010, 1, 1))
     clock.tick
 
     assert_equal 0, SimpleWorker.jobs.length
