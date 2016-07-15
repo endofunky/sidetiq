@@ -1,5 +1,31 @@
 module Sidetiq
   module Actor
+    class CelluloidWrapper
+      attr_reader :job
+
+      def initialize(actor)
+        @actor = actor
+      end
+
+      def terminate(wait=false)
+        @actor.terminate
+      rescue ::Celluloid::DeadActorError => e
+        Sidetiq.logger.debug e.message
+      end
+
+      def kill(wait=false)
+        @actor.kill
+      rescue ::Celluloid::DeadActorError => e
+        Sidetiq.logger.debug e.message
+      end
+
+      def start
+        @actor.start
+      rescue ::Celluloid::DeadActorError => e
+        Sidetiq.logger.debug e.message
+      end
+    end
+
     def self.included(base)
       base.__send__(:include, Celluloid)
       base.finalizer :sidetiq_finalizer
@@ -25,10 +51,17 @@ module Sidetiq
     end
 
     def link_to_sidekiq_manager
-      Sidekiq::CLI.instance.launcher.manager.link(current_actor)
-    rescue NoMethodError
-      debug "Can't link #{self.class.name}. Sidekiq::Manager not running. Retrying in 5 seconds ..."
-      after(5) { link_to_sidekiq_manager }
+      if Sidekiq::CLI.instance.launcher && Sidekiq::CLI.instance.launcher.manager
+        begin
+          p = ::Sidetiq::Actor::CelluloidWrapper.new(current_actor)
+          Sidekiq::CLI.instance.launcher.manager.workers << p
+          current_actor
+        rescue RuntimeError => e
+          after(5) { link_to_sidekiq_manager }
+        end
+      else
+        after(5) { link_to_sidekiq_manager }
+      end
     end
 
     def log_call(call)
