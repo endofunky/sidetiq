@@ -57,11 +57,9 @@ module Sidetiq
           Sidekiq::CLI.instance.launcher.manager.workers << p
           current_actor
         rescue RuntimeError => e
-          debug "Can't link #{self.class.name}. Sidekiq::Manager is in iteration. Retrying in 5 seconds ..."
           after(5) { link_to_sidekiq_manager }
         end
       else
-        debug "Can't link #{self.class.name}. Sidekiq::Manager not running. Retrying in 5 seconds ..."
         after(5) { link_to_sidekiq_manager }
       end
     end
