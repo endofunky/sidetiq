@@ -51,7 +51,7 @@ module Sidetiq
     end
 
     def link_to_sidekiq_manager
-      if Sidekiq::CLI.instance.launcher.present? && Sidekiq::CLI.instance.launcher.manager.present?
+      if !Sidekiq::CLI.instance.launcher && !Sidekiq::CLI.instance.launcher.manager
         begin
           p = ::Sidetiq::Actor::CelluloidWrapper.new(current_actor)
           Sidekiq::CLI.instance.launcher.manager.workers << p
