@@ -37,7 +37,8 @@ class TestSchedule < Sidetiq::TestCase
 
   def test_use_utc
     Sidetiq.config.utc = true
-    assert_equal(Time.utc(2010, 01, 01), Sidetiq::Schedule.new.start_time)
+    Sidetiq::Schedule.stubs(:beginning_of_times).returns(Time.new(2014, 1, 1))
+    assert_equal(Time.utc(2014, 01, 01), Sidetiq::Schedule.start_time)
   ensure
     Sidetiq.config.utc = false
   end

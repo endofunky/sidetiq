@@ -1,6 +1,10 @@
 require_relative 'helper'
 
 class TestClock < Sidetiq::TestCase
+  def before
+    Sidetiq::Schedule.stubs(:beginning_of_times).returns(Time.new(2014, 1, 1))
+  end
+
   def test_gettime_seconds
     assert_equal clock.gettime.tv_sec, Time.now.tv_sec
   end
@@ -38,18 +42,18 @@ class TestClock < Sidetiq::TestCase
     SimpleWorker.expects(:perform_at).times(10)
 
     10.times do |i|
-      clock.stubs(:gettime).returns(Time.local(2011, 1, i + 1, 1))
+      clock.stubs(:gettime).returns(Time.local(2015, 1, i + 1, 1))
       clock.tick
     end
 
-    clock.stubs(:gettime).returns(Time.local(2011, 1, 10, 2))
+    clock.stubs(:gettime).returns(Time.local(2015, 1, 10, 2))
     clock.tick
     clock.tick
     clock.tick
   end
 
   def test_enqueues_jobs_with_default_last_tick_arg_on_first_run
-    time = Time.local(2011, 1, 1, 1, 30)
+    time = Time.local(2015, 1, 1, 1, 30)
 
     clock.stubs(:gettime).returns(time, time + 3600)
 
@@ -67,7 +71,7 @@ class TestClock < Sidetiq::TestCase
   end
 
   def test_enqueues_jobs_with_last_run_timestamp_and_next_run_timestamp
-    time = Time.local(2011, 1, 1, 1, 30)
+    time = Time.local(2015, 1, 1, 1, 30)
 
     clock.stubs(:gettime).returns(time, time + 3600)
 
@@ -89,7 +93,7 @@ class TestClock < Sidetiq::TestCase
   end
 
   def test_enqueues_jobs_with_last_run_timestamp_if_optional_argument
-    time = Time.local(2011, 1, 1, 1, 30)
+    time = Time.local(2015, 1, 1, 1, 30)
 
     clock.stubs(:gettime).returns(time, time + 3600)
 
@@ -103,7 +107,7 @@ class TestClock < Sidetiq::TestCase
   end
 
   def test_enqueues_jobs_correctly_for_splat_args_perform_methods
-    time = Time.local(2011, 1, 1, 1, 30)
+    time = Time.local(2015, 1, 1, 1, 30)
 
     clock.stubs(:gettime).returns(time, time + 3600)
 
