@@ -23,7 +23,7 @@
 
         <% @history.each do |entry| %>
         <% entry = Sidekiq.load_json(entry).symbolize_keys %>
-        <% runtime = entry[:runtime]&.round(3) || "N/A" %>
+        <% runtime = entry[:runtime].nil? ? 'N/A' : entry[:runtime].round(3) %>
         <tr class="<%= 'error' if entry[:status] == 'failure' %>">
           <td><%= entry[:status].capitalize %></td>
           <td><%= Time.parse(entry[:timestamp]).strftime("%m/%d/%Y %I:%M:%S%p") %></td>
