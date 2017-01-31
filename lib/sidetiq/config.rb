@@ -19,7 +19,17 @@ module Sidetiq
 
     # Public: Returns the current configuration used by Sidetiq.
     def config
-      @config ||= OpenStruct.new
+      @config ||= Sidetiq::Config.new
+    end
+  end
+
+  class Config < OpenStruct
+    def enqueue_jobs?
+      if enqueue_jobs.respond_to? :call
+        enqueue_jobs.call
+      else
+        enqueue_jobs
+      end
     end
   end
 
@@ -29,6 +39,7 @@ module Sidetiq
     config.lock_expire = 1000
     config.utc = false
     config.handler_pool_size = nil
+    config.enqueue_jobs = true
   end
 end
 
