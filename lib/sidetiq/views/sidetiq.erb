@@ -18,29 +18,45 @@
         <thead>
           <th style="width: 50%">Worker</th>
           <th style="width: 10%">Queue</th>
-          <th style="width: 30%">Next Run</th>
-          <th style="width: 10%">Actions</th>
+          <th style="width: 27%">Next Run</th>
+          <th style="width: 13%">Actions</th>
         </thead>
         <% @workers.each do |worker| %>
         <% schedule = worker.schedule %>
-        <tr>
+        <tr class="<%= 'danger' unless worker.active? %>">
           <td>
             <a href="<%= "#{root_path}sidetiq/#{worker.name}/schedule" %>"><%= worker.name %></a>
-            <td><%= worker.get_sidekiq_options["queue"] %></td>
-            <td>
-              <% @next = schedule.next_occurrence(@time) %>
-              <% if @next.nil? %>
-              No schedule
-              <% else %>
-              <%= relative_time(schedule.next_occurrence(@time)) %>
-              <% end %>
-            </td>
-            <td>
-              <form action="<%= "#{root_path}sidetiq/#{worker.name}/trigger" %>" method="post">
-                <%= csrf_tag %>
-                <input class="btn btn-danger btn-small" type="submit" name="trigger" value="Trigger" data-confirm="Are you sure you want to trigger this job?" />
-              </form>
-            </td>
+            <% unless worker.active? %>
+              <div><em>Worker is deactivated, next runs won't be queued</em></div>
+            <% end %>
+          </td>
+          <td><%= worker.get_sidekiq_options["queue"] %></td>
+          <td>
+            <% @next = schedule.next_occurrence(@time) %>
+            <% if @next.nil? %>
+            No schedule
+            <% else %>
+            <%= relative_time(schedule.next_occurrence(@time)) %>
+            <% end %>
+          </td>
+          <td>
+            <form action="<%= "#{root_path}sidetiq/#{worker.name}/trigger" %>" method="post">
+              <%= csrf_tag %>
+              <input class="btn btn-danger btn-small btn-block" type="submit" name="trigger" value="Trigger" data-confirm="Are you sure you want to trigger this job?" />
+            </form>
+
+            <% if worker.active? %>
+            <form action="<%= "#{root_path}sidetiq/#{worker.name}/deactivate" %>" method="post">
+              <%= csrf_tag %>
+              <input class="btn btn-danger btn-small btn-block" type="submit" name="trigger" value="Deactivate" data-confirm="Are you sure you want to deactivate this job?" />
+            </form>
+            <% else %>
+            <form action="<%= "#{root_path}sidetiq/#{worker.name}/activate" %>" method="post">
+              <%= csrf_tag %>
+              <input class="btn btn-warn btn-small btn-block" type="submit" name="trigger" value="Activate" data-confirm="Are you sure you want to activate this job?" />
+            </form>
+            <% end %>
+          </td>
         </tr>
         <% end %>
       </table>
