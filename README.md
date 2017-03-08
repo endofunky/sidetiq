@@ -12,6 +12,13 @@ Recurring jobs for [Sidekiq](http://mperham.github.com/sidekiq/).
 
 Due to changes in Sidekiq (which would necessitate an almost complete rewrite) and the move to the ActiveJob abstraction this library is no longer maintained. Please refer to alternatives instead.
 
+### Alternatives
+
+- [Sidekiq PRO](http://sidekiq.org/products/pro)
+- [sidekiq-cron](https://github.com/ondrejbartas/sidekiq-cron)
+- [sidekiq-scheduler](https://github.com/moove-it/sidekiq-scheduler)
+- [sidekiq-dejavu](https://github.com/felixbuenemann/sidekiq-dejavu)
+
 Overview
 --------
 
